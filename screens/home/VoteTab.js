@@ -7,37 +7,31 @@ export default class VoteTab extends React.Component {
     this.state = {
       elections: [
           {
-              "eid": "#1",
               "title":"Selfie Contest",
               "subtitle":"Who the best looking?",
               "tags":["#faces","#selfies"]
           },
           {
-              "eid":"#2",
               "title":"Audiophilia",
               "subtitle":"Anyone gonna rule the music league here?",
               "tags":["#recordings","#songs"]
           },
           {
-              "eid":"#3",
               "title":"Meme Wars",
               "subtitle":"May the best meme win!",
               "tags":["#memes"]
           },
           {
-              "eid":"#4",
               "title":"Art Battle",
               "subtitle":"Brush up for the battle of brushes and pencils.",
               "tags":["#drawing","#sketches","#painting","#art"],
           },
           {
-              "eid":"#5",
               "title":"Pen up!",
               "subtitle":"Showcase your best articles/stories here.",
               "tags":["#writing","#stories","#articles"]
           },
       ],
-      pressed: false,
     }
   }
 
@@ -61,7 +55,7 @@ export default class VoteTab extends React.Component {
           <FlatList
             data={this.state.elections}
             renderItem={this.renderElectionCard}
-            keyExtractor={(item) => item.eid} />
+            keyExtractor={(item) => item.title} />
         </View>
       </View>
     );

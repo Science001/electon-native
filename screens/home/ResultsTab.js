@@ -1,67 +1,47 @@
 import React from 'react';
 import { FlatList, TouchableOpacity, Text, StyleSheet, View } from 'react-native';
 
-export default class VoteTab extends React.Component {
+export default class ResultsTab extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      results: [
-          {
-              "eid": "#1",
-              "title":"Selfie Contest",
-              "winner":"Foo",
-              "votes": 123,
-          },
-          {
-              "eid":"#2",
-              "title":"Audiophilia",
-              "winner":"Foo",
-              "votes": 123,
-          },
-          {
-              "eid":"#3",
-              "title":"Meme Wars",
-              "winner":"Foo",
-              "votes": 123,
-          },
-          {
-              "eid":"#4",
-              "title":"Art Battle",
-              "winner":"Foo",
-              "votes": 123,
-          },
-          {
-              "eid":"#5",
-              "title":"Pen up!",
-              "winner":"Foo",
-              "votes": 123,
-          },
-      ],
-      pressed: false,
+      results: {
+        "title":"Selfie Contest",
+        "winner":"Otter",
+        "winnerScore": 123,
+        "yourScore": 123,
+      },
+      so: {
+        text: '',
+        color: '',
+      },
     }
   }
 
-  showDetails = () => undefined
-
-  renderResultCard = ({item}) => (
-    <View style={styles.resultCard}>
-      <Text style={{fontWeight: 'bold'}}>{item.title}</Text>
-      <Text>Winner: {item.winner}</Text>
-      <Text>Votes: {item.votes}</Text>
-    </View>
-  );
+  componentWillMount() {
+    var { winnerScore, yourScore } = this.state.results
+    var _text = winnerScore===yourScore ? 'Hurray! You won the election.' : 'Oops! You lost the election.'
+    var _color = winnerScore===yourScore ? '#73c17b' : '#d16e6e'
+    this.setState({
+      so: {
+        text: _text,
+        color: _color,
+      }
+    })
+  }
 
   render() {
     return (
-      <View>
+      <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerText}>Results</Text>
         </View>
-        <View>
-          <FlatList
-            data={this.state.results}
-            renderItem={this.renderResultCard}
-            keyExtractor={(item) => item.eid} />
+        <View style={styles.resultCard}>
+          <Text style={styles.title}>{this.state.results.title}</Text>
+          <Text style={styles.content}>Winner: {this.state.results.winner}</Text>
+          <Text style={styles.content}>Votes: {this.state.results.winnerScore}</Text>
+          <Text style={styles.doubleSpace}>Your Votes: {this.state.results.yourScore}</Text>
+          <Text style={{backgroundColor: this.state.so.color, marginTop: 20, padding: 12,}}>{this.state.so.text}</Text>
         </View>
       </View>
     );
@@ -69,12 +49,6 @@ export default class VoteTab extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  resultCard: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#aaafa9',
-    padding: 15,
-    backgroundColor: "#ffffff",
-  },
   header: {
     backgroundColor: '#041941',
     padding: 12,
@@ -82,5 +56,28 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 24,
     color: '#ffffff',
-  }
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#020b1c',
+  },
+  resultCard: {
+    margin: 25,
+    padding: 15,
+    backgroundColor: "#ffffff",
+    borderRadius: 5,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  content: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  doubleSpace: {
+    fontSize: 16,
+    marginTop: 20,
+  },
 })
