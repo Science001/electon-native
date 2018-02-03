@@ -35,10 +35,8 @@ export default class VoteTab extends React.Component {
     }
   }
 
-  showDetails = () => undefined
-
   renderElectionCard = ({item}) => (
-    <TouchableOpacity style={styles.electionCard} onPress={this.showDetails}>
+    <TouchableOpacity style={styles.electionCard} onPress={() => this.props.navigation.navigate('Pop')}>
       <Text style={{fontWeight: 'bold'}}>{item.title}</Text>
       <Text>{item.subtitle}</Text>
       <Text>{item.tags}</Text>
@@ -51,12 +49,10 @@ export default class VoteTab extends React.Component {
         <View style={styles.header}>
           <Text style={styles.headerText}>Vote</Text>
         </View>
-        <View>
-          <FlatList
-            data={this.state.elections}
-            renderItem={this.renderElectionCard}
-            keyExtractor={(item) => item.title} />
-        </View>
+        <FlatList
+          data={this.state.elections}
+          renderItem={this.renderElectionCard}
+          keyExtractor={(item) => item.title} />
       </View>
     );
   }
