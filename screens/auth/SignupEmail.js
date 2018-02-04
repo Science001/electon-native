@@ -42,7 +42,7 @@ export default class SignupEmail extends React.Component {
     if (formData != null) {
       this.setState({head: "Signing you up"})
       var comp = this
-      var url = "https://auth.fractiously70.hasura-app.io/v1/signup";
+      var url = "https://auth.fortune22.hasura-app.io/v1/signup";
       var requestOptions = {
         "method": "POST",
         "headers": {

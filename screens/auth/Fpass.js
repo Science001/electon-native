@@ -31,7 +31,7 @@ export default class Fpass extends React.Component {
     if (formData != null) {
       this.setState({head: "Sending Email"})
       var comp = this
-      var url = "https://auth.fractiously70.hasura-app.io/v1/providers/email/forgot-password";
+      var url = "https://auth.fortune22.hasura-app.io/v1/providers/email/forgot-password";
       var requestOptions = {
           "method": "POST",
           "headers": {
