@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image} from 'react-native';
+import { StyleSheet, Text, View, Image, Button, AsyncStorage} from 'react-native';
 
 export default class UserInfo extends Component {
     constructor(props) {
@@ -11,11 +11,21 @@ export default class UserInfo extends Component {
        noOfElectionsWon: 7,
      }
   }
+
+  logout = () => {
+    AsyncStorage.removeItem('HASURA_AUTH_TOKEN');
+    this.setState({
+      name:'You are logged out.',
+      latestElection:'Please restart application.',
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerText}>About You</Text>
+          <Button title="LOG OUT" color="#041941" onPress={this.logout} />
         </View>
         <Image source={this.state.pic} style={styles.image} resizeMode="cover"/>
         <View>
@@ -44,6 +54,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#020b1c',
   },
   header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     backgroundColor: '#041941',
     padding: 12,
   },
@@ -52,11 +64,11 @@ const styles = StyleSheet.create({
     color: '#ffffff',
   },
   image:{
-    height: 300,
-    width: 300,
+    height: 200,
+    width: 200,
     alignSelf: 'center',
     borderWidth: 1,
-    borderRadius: 150,
+    borderRadius: 100,
   },
   box: {
     padding: 10,
@@ -72,5 +84,5 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginLeft: 10,
     color:'#020b1c',
-  }
+  },
 });

@@ -2,11 +2,11 @@ import React from 'react';
 import { StackNavigator, TabNavigator, TabBarBottom } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import VoteTab from './screens/home/VoteTab.js';
-import Pop from './screens/home/Pop.js';
-import NominateTab from './screens/home/NominateTab.js';
-import ResultsTab from './screens/home/ResultsTab.js';
-import UserInfo from './screens/home/UserInfo.js';
+import VoteTab from '../screens/home/VoteTab.js';
+import Pop from '../screens/home/Pop.js';
+import NominateTab from '../screens/home/NominateTab.js';
+import ResultsTab from '../screens/home/ResultsTab.js';
+import UserInfo from '../screens/home/UserInfo.js';
 
 const PopNavigator = StackNavigator({
   VoteList: {

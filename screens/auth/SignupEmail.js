@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Text, Button} from 'react-native';
+import {StyleSheet, View, Text, Button, AsyncStorage} from 'react-native';
 import t from 'tcomb-form-native';
 
 const Form = t.form.Form;
@@ -64,16 +64,21 @@ export default class SignupEmail extends React.Component {
       })
       .then(function(result) {
         console.log(result);
+        // To save the auth token received to offline storage
+        var authToken = result.auth_token
+        AsyncStorage.setItem('HASURA_AUTH_TOKEN', authToken);
         comp.setState({
           head: "Email Sent",
           subline: "Verify yourself with the link in your inbox"
         });
-        // To save the auth token received to offline storage
-        // var authToken = result.auth_token
-        // AsyncStorage.setItem('HASURA_AUTH_TOKEN', authToken);
+        comp.props.navigation.navigate('Home');
       })
       .catch(function(error) {
         console.log('Request Failed:' + error);
+        comp.setState({
+          head: "Request Failed",
+          subline: 'An Error occured'
+        });
       });
     }
   }
