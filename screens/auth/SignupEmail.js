@@ -71,7 +71,6 @@ export default class SignupEmail extends React.Component {
           head: "Email Sent",
           subline: "Verify yourself with the link in your inbox"
         });
-        comp.props.navigation.navigate('Home');
       })
       .catch(function(error) {
         console.log('Request Failed:' + error);
