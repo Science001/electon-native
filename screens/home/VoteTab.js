@@ -36,7 +36,11 @@ export default class VoteTab extends React.Component {
   }
 
   renderElectionCard = ({item}) => (
-    <TouchableOpacity style={styles.electionCard} onPress={() => this.props.navigation.navigate('Pop')}>
+    <TouchableOpacity
+      style={styles.electionCard}
+      onPress={() => this.props.navigation.navigate('Pop',{
+        electionTitle: item.title,
+      })}>
       <Text style={{fontWeight: 'bold'}}>{item.title}</Text>
       <Text>{item.subtitle}</Text>
       <Text>{item.tags}</Text>
