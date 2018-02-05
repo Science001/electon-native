@@ -6,6 +6,6 @@ import HomeNavigator from './navigators/HomeNavigator.js';
 
 var auth_token = AsyncStorage.getItem('HASURA_AUTH_TOKEN');
 bool = auth_token!=null;
-const toOpen =  false ? HomeNavigator : AuthNavigator;
+const toOpen =  true ? HomeNavigator : AuthNavigator;
 
 export default toOpen
