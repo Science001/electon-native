@@ -6,47 +6,17 @@ export default class Pop extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      nominees: [
-        {
-          "username": "Voter Otter",
-          "file": "http://www.montereybayaquarium.org/-/m/images/animal-guide/marine-mammals/sea-otter-mom-pup.jpg?mh=916&mw=1222&usecustomfunctions=1&centercrop=1",
-          "description": "Please Upvote! _/\\_",
-        },
-        {
-          "username": "Voter Otter",
-          "file": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-          "description": "This is an audio file.",
-        },
-        {
-          "username": "Voter Otter",
-          "file": "http://techslides.com/demos/sample-videos/small.mp4",
-          "description": "Video. Just for a demo that it can render all file types. Else, one election will only have one file typed nominations.",
-        },
-        {
-          "username": "Voter Otter",
-          "file": "http://www.montereybayaquarium.org/-/m/images/animal-guide/marine-mammals/sea-otter-mom-pup.jpg?mh=916&mw=1222&usecustomfunctions=1&centercrop=1",
-          "description": "Blah Blah Blah",
-        },
-        {
-          "username": "Voter Otter",
-          "file": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-          "description": "Blah Blah Blah",
-        },
-        {
-          "username": "Voter Otter",
-          "file": "http://techslides.com/demos/sample-videos/small.mp4",
-          "description": "Blah Blah Blah",
-        },
-      ],
       sayNominee: 'Nominees',
     }
   }
 
   componentWillMount() {
     const { params } = this.props.navigation.state;
-    const _electionTitle = params.electionTitle;
+    const _electionTitle = params.election;
+    const nominationData = params.nominationData;
     this.setState({
-      electionTitle: _electionTitle
+      electionTitle: _electionTitle,
+      nominees: nominationData,
     });
   }
 
