@@ -1,34 +1,68 @@
 import React from 'react';
-import { FlatList, TouchableOpacity, Text, StyleSheet, View } from 'react-native';
+import { FlatList, TouchableOpacity, WebView, Text, StyleSheet, View } from 'react-native';
 
 export default class ResultsTab extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor(props){
+    super(props)
     this.state = {
-      results: {
-        "title":"Selfie Contest",
-        "winner":"Otter",
-        "winnerScore": 123,
-        "yourScore": 123,
-      },
-      so: {
-        text: '',
-        color: '',
-      },
+      results: [
+        {
+          "event": "Ironman pics",
+          "details": {
+            "winner": {
+              "username": "Hyper",
+              "filename": "Dope Ironman",
+              "description": "This is the dopest ironman pic. So it should win.",
+              "submission": "https://upload.wikimedia.org/wikipedia/en/thumb/e/e0/Iron_Man_bleeding_edge.jpg/220px-Iron_Man_bleeding_edge.jpg",
+              "votes": 123,
+            },
+            "user": {
+              "username": "gYpfSMWpXFf",
+              "filename": "KmgnPmWM",
+              "description": "ycxbzbIFbRGsymaB",
+              "submission": "https://vignette.wikia.nocookie.net/ironman/images/2/21/47.jpg",
+              "votes": 100,
+            }
+          }
+        },
+        {
+          "event": "Ironman pics",
+          "details": {
+            "winner": {
+              "username": "Hyper",
+              "filename": "Dope Ironman",
+              "description": "This is the dopest ironman pic. So it should win.",
+              "submission": "https://upload.wikimedia.org/wikipedia/en/thumb/e/e0/Iron_Man_bleeding_edge.jpg/220px-Iron_Man_bleeding_edge.jpg",
+              "votes": 123,
+            },
+            "user": {
+              "username": "gYpfSMWpXFf",
+              "filename": "KmgnPmWM",
+              "description": "ycxbzbIFbRGsymaB",
+              "submission": "https://vignette.wikia.nocookie.net/ironman/images/2/21/47.jpg",
+              "votes": 123,
+            }
+          }
+        },
+      ],
     }
   }
 
-  componentWillMount() {
-    var { winnerScore, yourScore } = this.state.results
-    var _text = winnerScore===yourScore ? 'Hurray! You won the election.' : 'Oops! You lost the election.'
-    var _color = winnerScore===yourScore ? '#73c17b' : '#d16e6e'
-    this.setState({
-      so: {
-        text: _text,
-        color: _color,
-      }
-    })
-  }
+  renderResultCard = ({item}) => (
+    <TouchableOpacity
+      style={styles.resultCard}
+      onPress={() => this.props.navigation.navigate('RPop',{
+        result: item,
+      })}>
+      <Text style={styles.title}>{item.event}</Text>
+      <Text
+        style={{
+          backgroundColor: item.details.winner.votes===item.details.user.votes ? '#73c17b':'#d16e6e',
+          marginTop: 20, padding: 12,}}>
+        {item.details.winner.votes===item.details.user.votes ? 'Hurray! You won the election.' : 'Oops! You lost the election.'}
+      </Text>
+    </TouchableOpacity>
+  )
 
   render() {
     return (
@@ -36,19 +70,20 @@ export default class ResultsTab extends React.Component {
         <View style={styles.header}>
           <Text style={styles.headerText}>Results</Text>
         </View>
-        <View style={styles.resultCard}>
-          <Text style={styles.title}>{this.state.results.title}</Text>
-          <Text style={styles.content}>Winner: {this.state.results.winner}</Text>
-          <Text style={styles.content}>Votes: {this.state.results.winnerScore}</Text>
-          <Text style={styles.doubleSpace}>Your Votes: {this.state.results.yourScore}</Text>
-          <Text style={{backgroundColor: this.state.so.color, marginTop: 20, padding: 12,}}>{this.state.so.text}</Text>
-        </View>
+        <FlatList
+          data={this.state.results}
+          renderItem={this.renderResultCard}
+          keyExtractor={(item) => item.event} />
       </View>
-    );
+    )
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#020b1c',
+  },
   header: {
     backgroundColor: '#041941',
     padding: 12,
@@ -57,12 +92,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: '#ffffff',
   },
-  container: {
-    flex: 1,
-    backgroundColor: '#020b1c',
-  },
   resultCard: {
-    margin: 25,
+    marginTop: 25,
+    marginLeft: 25,
+    marginRight: 25,
     padding: 15,
     backgroundColor: "#ffffff",
     borderRadius: 5,
@@ -71,13 +104,5 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
-  },
-  content: {
-    fontSize: 16,
-    marginBottom: 10,
-  },
-  doubleSpace: {
-    fontSize: 16,
-    marginTop: 20,
   },
 })

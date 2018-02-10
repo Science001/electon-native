@@ -6,6 +6,7 @@ import VoteTab from '../screens/home/VoteTab.js';
 import Pop from '../screens/home/Pop.js';
 import NominateTab from '../screens/home/NominateTab.js';
 import ResultsTab from '../screens/home/ResultsTab.js';
+import Rpop from '../screens/home/Rpop.js';
 import UserInfo from '../screens/home/UserInfo.js';
 
 const PopNavigator = StackNavigator({
@@ -14,6 +15,18 @@ const PopNavigator = StackNavigator({
   },
   Pop: {
     screen: Pop,
+  }
+},
+{
+  headerMode: 'none',
+});
+
+const RpopNavigator = StackNavigator({
+  ResultsList: {
+    screen: ResultsTab,
+  },
+  RPop: {
+    screen: Rpop,
   }
 },
 {
@@ -36,7 +49,7 @@ const HomeNavigator = TabNavigator({
     }
   },
   ResultsTab: {
-    screen: ResultsTab,
+    screen: RpopNavigator,
     navigationOptions: {
       tabBarIcon: <Icon name="trophy" size={25} color='#ffffff'/>,
       tabBarLabel: 'Results'
