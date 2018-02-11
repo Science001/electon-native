@@ -1,15 +1,33 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, Button, AsyncStorage} from 'react-native';
+import axios from 'axios';
 
 export default class UserInfo extends Component {
     constructor(props) {
     super(props);
     this.state = {
-       name:'Otter',
-       pic : { uri: 'https://www.doi.gov/sites/doi.gov/files/uploads/seaotterkodiaknwrlisahuppusfws.jpg'},
-       latestElection:'Best Swimmer',
-       noOfElectionsWon: 7,
+       name:'',
+       pic : { uri: ''},
+       latestElection:'',
+       noOfElectionsWon: null,
      }
+  }
+
+  componentDidMount() {
+    var self = this;
+    axios.get('https://api.fortune22.hasura-app.io/users')
+    .then(function(response) {
+      console.log(response);
+      self.setState({
+        name: response.data.data.name,
+        pic: {uri: response.data.data.avatar},
+        latestElection: response.data.data.latest,
+        noOfElectionsWon: response.data.data.score,
+      });
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
   }
 
   logout = () => {
