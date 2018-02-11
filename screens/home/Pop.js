@@ -19,7 +19,7 @@ export default class Pop extends React.Component {
   renderNomineeCard = ({item}) => (
     <View style={styles.nomineeCard}>
       <Text style={styles.otterName}>{item.username}</Text>
-      <WebView style={styles.file} initialScale={50} source={{uri: item.file}} />
+      <WebView style={styles.submission} initialScale={50} source={{uri: item.submission}} />
       <Text style={styles.otterName}>Description:</Text>
       <View style={styles.description}>
         <Text>{item.description}</Text>
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginTop: 10,
   },
-  file: {
+  submission: {
     alignItems: 'stretch',
     margin: 15,
     height: 200,

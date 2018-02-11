@@ -23,7 +23,7 @@ export default class Rpop extends React.Component {
         <View style={styles.resultCard}>
           <Text style={styles.title}>{this.state.result.event}</Text>
           <Text style={styles.name}>Winner: {this.state.result.details.winner.username}</Text>
-          <WebView style={styles.file} initialScale={50} source={{uri: this.state.result.details.winner.submission}} />
+          <WebView style={styles.submission} initialScale={50} source={{uri: this.state.result.details.winner.submission}} />
           <View style={styles.description}>
             <Text>{this.state.result.details.winner.description}</Text>
           </View>
@@ -32,7 +32,7 @@ export default class Rpop extends React.Component {
           <View style={styles.divider} />
 
           <Text style={styles.name}>You: {this.state.result.details.user.username}</Text>
-          <WebView style={styles.file} initialScale={50} source={{uri: this.state.result.details.user.submission}} />
+          <WebView style={styles.submission} initialScale={50} source={{uri: this.state.result.details.user.submission}} />
           <View style={styles.description}>
             <Text>{this.state.result.details.user.description}</Text>
           </View>
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
   },
-  file: {
+  submission: {
     margin: 15,
     height: 1000,
     width: 1000,

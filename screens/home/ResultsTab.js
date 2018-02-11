@@ -1,51 +1,27 @@
 import React from 'react';
 import { FlatList, TouchableOpacity, WebView, Text, StyleSheet, View } from 'react-native';
+import axios from 'axios';
 
 export default class ResultsTab extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      results: [
-        {
-          "event": "Ironman pics",
-          "details": {
-            "winner": {
-              "username": "Hyper",
-              "filename": "Dope Ironman",
-              "description": "This is the dopest ironman pic. So it should win.",
-              "submission": "https://upload.wikimedia.org/wikipedia/en/thumb/e/e0/Iron_Man_bleeding_edge.jpg/220px-Iron_Man_bleeding_edge.jpg",
-              "votes": 123,
-            },
-            "user": {
-              "username": "gYpfSMWpXFf",
-              "filename": "KmgnPmWM",
-              "description": "ycxbzbIFbRGsymaB",
-              "submission": "https://vignette.wikia.nocookie.net/ironman/images/2/21/47.jpg",
-              "votes": 100,
-            }
-          }
-        },
-        {
-          "event": "Ironman pics",
-          "details": {
-            "winner": {
-              "username": "Hyper",
-              "filename": "Dope Ironman",
-              "description": "This is the dopest ironman pic. So it should win.",
-              "submission": "https://upload.wikimedia.org/wikipedia/en/thumb/e/e0/Iron_Man_bleeding_edge.jpg/220px-Iron_Man_bleeding_edge.jpg",
-              "votes": 123,
-            },
-            "user": {
-              "username": "gYpfSMWpXFf",
-              "filename": "KmgnPmWM",
-              "description": "ycxbzbIFbRGsymaB",
-              "submission": "https://vignette.wikia.nocookie.net/ironman/images/2/21/47.jpg",
-              "votes": 123,
-            }
-          }
-        },
-      ],
+      results: [],
     }
+  }
+
+  componentDidMount() {
+    var self = this;
+    axios.get('https://api.fortune22.hasura-app.io/results')
+    .then(function(response) {
+      console.log(response);
+      self.setState({
+        results: response.data.data,
+      });
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
   }
 
   renderResultCard = ({item}) => (
