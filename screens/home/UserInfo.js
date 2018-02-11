@@ -7,7 +7,7 @@ export default class UserInfo extends Component {
     super(props);
     this.state = {
        name:'',
-       pic : { uri: ''},
+       pic : { uri: 'null'},
        latestElection:'',
        noOfElectionsWon: null,
      }
