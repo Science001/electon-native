@@ -4,9 +4,13 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 import VoteTab from '../screens/home/VoteTab.js';
 import Pop from '../screens/home/Pop.js';
+
 import NominateTab from '../screens/home/NominateTab.js';
+import Npop from '../screens/home/Npop.js';
+
 import ResultsTab from '../screens/home/ResultsTab.js';
 import Rpop from '../screens/home/Rpop.js';
+
 import UserInfo from '../screens/home/UserInfo.js';
 
 const PopNavigator = StackNavigator({
@@ -33,6 +37,18 @@ const RpopNavigator = StackNavigator({
   headerMode: 'none',
 });
 
+const NpopNavigator = StackNavigator({
+  NomsList: {
+    screen: NominateTab,
+  },
+  NPop: {
+    screen: Npop,
+  }
+},
+{
+  headerMode: 'none',
+});
+
 const HomeNavigator = TabNavigator({
   VoteTab: {
     screen: PopNavigator,
@@ -42,7 +58,7 @@ const HomeNavigator = TabNavigator({
     }
   },
   NominateTab: {
-    screen: NominateTab,
+    screen: NpopNavigator,
     navigationOptions: {
       tabBarIcon: <Icon name="hand-paper-o" size={25} color='#ffffff'/>,
       tabBarLabel: 'Nominate'
