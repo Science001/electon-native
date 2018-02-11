@@ -5,19 +5,13 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 export default class Pop extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      sayNominee: 'Nominees',
-    }
-  }
-
-  componentWillMount() {
     const { params } = this.props.navigation.state;
     const _electionTitle = params.election;
     const nominationData = params.nominationData;
-    this.setState({
+    this.state = {
       electionTitle: _electionTitle,
       nominees: nominationData,
-    });
+    }
   }
 
   handleUpvote = () => {this.setState({sayNominee: 'Upvoted'})}

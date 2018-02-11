@@ -4,12 +4,13 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 export default class Rpop extends React.Component {
 
-  componentWillMount() {
+  constructor(props) {
+    super(props)
     const { params } = this.props.navigation.state;
     const _result = params.result;
-    this.setState({
+    this.state = {
       result: _result,
-    });
+    }
   }
 
   render() {
