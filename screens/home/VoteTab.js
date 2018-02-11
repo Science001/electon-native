@@ -39,7 +39,7 @@ export default class VoteTab extends React.Component {
       <Text style={{fontWeight: 'bold'}}>{item.title}</Text>
       <Text>{item.subtitle}</Text>
       <Text>{item.tags}</Text>
-      <Text>Open for {item.deadline} more day(s)</Text>
+      <Text>Open for {item.deadline}</Text>
     </TouchableOpacity>
   );
 
