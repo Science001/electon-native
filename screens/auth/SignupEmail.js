@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Text, Button, AsyncStorage} from 'react-native';
+import {StyleSheet, View, Text, Button, AsyncStorage, KeyboardAvoidingView} from 'react-native';
 import t from 'tcomb-form-native';
 
 const Form = t.form.Form;
@@ -85,7 +85,7 @@ export default class SignupEmail extends React.Component {
   render() {
     return (
       <View style={styles.background}>
-        <View style={styles.container}>
+        <KeyboardAvoidingView behavior="padding" style={styles.container}>
           <Text style={styles.heading}>{this.state.head}</Text>
           <Text style={{color: '#8074d7', marginBottom: 25}}>{this.state.subline}</Text>
           <View style={{width: 250}}>
@@ -95,7 +95,7 @@ export default class SignupEmail extends React.Component {
               options={options} />
             <Button title="SIGN UP" onPress={this.handlePress} color="#3338C9"/>
           </View>
-        </View>
+        </KeyboardAvoidingView>
       </View>
     );
   }
