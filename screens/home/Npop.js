@@ -1,6 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'
+import { View, Text, StyleSheet, TouchableOpacity, WebView, TextInput, KeyboardAvoidingView } from 'react-native';
+import { DocumentPicker } from 'expo';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import Button from '../../components/Button.js';
 
 export default class Npop extends React.Component {
   constructor(props) {
@@ -9,48 +11,71 @@ export default class Npop extends React.Component {
     const _nom = params.nom;
     this.state = {
       nom: _nom,
-      picURL: 'https://cdn3.iconfinder.com/data/icons/web-document-icons/512/Upload_Document-512.png',
-      footer: 'Upload your file'
+      fileURL: '',
+      fileName: '',
+      fileSize: null,
+      buttonText: 'Upload your nomination file',
     }
   }
 
-  handleUpload = () => {
-    this.setState({
-      picURL: 'https://www.thewrap.com/wp-content/uploads/2017/07/Robert-Downey-Jr-Iron-Man-Pepper-Potts-Tony-Stark.jpg',
-      footer: 'File Uploaded',
-    })
+  getFile = async () => {
+    var result = await DocumentPicker.getDocumentAsync();
+    console.log(result);
+    if (result.type != 'cancel') {
+      this.setState({
+        fileURL: result.uri,
+        fileName: result.name,
+        fileSize: result.size,
+        buttonText: 'CHANGE FILE',
+      })
+    }
   }
 
   render() {
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <View style={styles.header}>
           <Icon name="caret-left" size={30} color="#ffffff" onPress={() => this.props.navigation.goBack()}/>
           <Text style={styles.headerText}>Nominate</Text>
         </View>
-        <View style={styles.nomCard}>
-          <Text style={{fontWeight: 'bold'}}>{this.state.nom.title}</Text>
-          <Text>{this.state.nom.subtitle}</Text>
-          <Text>{this.state.nom.tags}</Text>
-          <Text>Open for {this.state.nom.deadline}</Text>
-        </View>
-        <TouchableOpacity
-          style={styles.upfile}
-          onPress={this.handleUpload}>
-          <Image style={styles.image} source={{uri: this.state.picURL}} />
-        </TouchableOpacity>
-        <View style={styles.box}>
-          <Text style={styles.text}>{this.state.footer}</Text>
-        </View>
-      </View>
-    )
+        <View style={{flex:1, margin: 15}}>
+          <View style={styles.nomCard}>
+            <Text style={{fontWeight: 'bold'}}>{this.state.nom.title}</Text>
+            <Text>{this.state.nom.subtitle}</Text>
+            <Text>{this.state.nom.tags}</Text>
+            <Text>Open for {this.state.nom.deadline}</Text>
+          </View>
+
+          {!!this.state.fileName &&
+            <Text style={styles.text}>Selected File: {this.state.fileName}</Text>}
+          {!!this.state.fileURL &&
+            <WebView style={styles.webview} initialScale={1} source={{uri: this.state.fileURL}} />}
+
+          <Button title={this.state.buttonText} onPress={this.getFile} />
+
+          {!!this.state.fileURL &&
+            <TextInput
+              style={styles.input}
+              placeholder="Give a description"
+              placeholderTextColor="#e6e8f7"
+              underlineColorAndroid="transparent"
+              multiline={true}
+              autoGrow={true}
+              maxHeight={100}
+              onChangeText={(text) => this.setState({description: text,})}
+              />}
+
+            {!!this.state.description &&
+              <Button title="NOMINATE" onPress={this.handleSubmit} />}
+          </View>
+      </KeyboardAvoidingView>
+    );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between',
     alignItems: 'stretch',
     backgroundColor: '#020b1c',
   },
@@ -68,27 +93,26 @@ const styles = StyleSheet.create({
   nomCard: {
     borderRadius: 5,
     padding: 15,
-    margin: 15,
+    marginBottom: 15,
     backgroundColor: "#ffffff",
   },
-  upfile: {
-    height: 300,
-    borderRadius: 5,
-    margin: 15,
-    backgroundColor: "#ffffff",
-  },
-  image: {
+  webview: {
     alignItems: 'stretch',
-    height: 300,
-  },
-  box: {
-    padding: 10,
-    backgroundColor: '#6FA0F6',
-    marginBottom: 1,
+    margin: 15,
+    height: 200,
   },
   text: {
-    fontSize: 20,
-    marginLeft: 10,
+    fontSize: 16,
+    marginLeft: 15,
     color:'white',
+  },
+  input: {
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 15,
+    marginBottom: 15,
+    backgroundColor: "#6FA0F6",
+    borderColor: "#346bcb",
+    color: '#ffffff',
   },
 })
