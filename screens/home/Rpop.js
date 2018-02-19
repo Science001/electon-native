@@ -1,5 +1,5 @@
 import React from 'react';
-import { WebView, Text, StyleSheet, View } from 'react-native';
+import { WebView, Text, StyleSheet, View, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 export default class Rpop extends React.Component {
@@ -20,10 +20,10 @@ export default class Rpop extends React.Component {
           <Icon name="caret-left" size={30} color="#ffffff" onPress={() => this.props.navigation.goBack()}/>
           <Text style={styles.headerText}>Results</Text>
         </View>
-        <View style={styles.resultCard}>
+        <ScrollView contentContainerStyle={styles.resultCard}>
           <Text style={styles.title}>{this.state.result.event}</Text>
           <Text style={styles.name}>Winner: {this.state.result.details.winner.username}</Text>
-          <WebView style={styles.submission} initialScale={50} source={{uri: this.state.result.details.winner.submission}} />
+          <WebView style={styles.webview} initialScale={50} source={{uri: this.state.result.details.winner.submission}} />
           <View style={styles.description}>
             <Text>{this.state.result.details.winner.description}</Text>
           </View>
@@ -32,12 +32,12 @@ export default class Rpop extends React.Component {
           <View style={styles.divider} />
 
           <Text style={styles.name}>You: {this.state.result.details.user.username}</Text>
-          <WebView style={styles.submission} initialScale={50} source={{uri: this.state.result.details.user.submission}} />
+          <WebView style={styles.webview} initialScale={50} source={{uri: this.state.result.details.user.submission}} />
           <View style={styles.description}>
             <Text>{this.state.result.details.user.description}</Text>
           </View>
           <Text style={styles.content}>Votes: {this.state.result.details.user.votes}</Text>
-        </View>
+        </ScrollView>
       </View>
     )
   }
@@ -60,11 +60,13 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   resultCard: {
+    flex: 1,
     margin: 25,
     padding: 15,
     backgroundColor: "#ffffff",
     borderRadius: 5,
     alignItems: 'stretch',
+    justifyContent: 'flex-start',
   },
   title: {
     fontSize: 24,
@@ -76,15 +78,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
   },
-  submission: {
-    margin: 15,
+  webview: {
+    marginBottom: 15,
     height: 1000,
-    width: 1000,
+    alignItems: 'stretch',
   },
   description: {
+    flex: 1,
     backgroundColor: "#d3d3d3",
     padding: 10,
-    margin: 10,
+    marginBottom: 10,
   },
   content: {
     fontSize: 16,
