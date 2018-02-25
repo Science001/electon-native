@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, View, Text, Button, AsyncStorage, KeyboardAvoidingView} from 'react-native';
 import t from 'tcomb-form-native';
+import axios from 'axios';
 
 const Form = t.form.Form;
 
@@ -40,45 +41,74 @@ export default class SignupEmail extends React.Component {
   handlePress = () => {
     const formData = this.formRef.getValue()
     if (formData != null) {
-      this.setState({head: "Signing you up"})
-      var comp = this
-      var url = "https://auth.fortune22.hasura-app.io/v1/signup";
-      var requestOptions = {
-        "method": "POST",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      };
-      var body = {
-        "provider": "email",
-        "data": {
-          "email": formData.email,
-          "password": formData.password,
-        }
-      };
-      requestOptions.body = JSON.stringify(body);
-
-      fetch(url, requestOptions)
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(result) {
-        console.log(result);
-        // To save the auth token received to offline storage
-        var authToken = result.auth_token
-        AsyncStorage.setItem('HASURA_AUTH_TOKEN', authToken);
-        comp.setState({
-          head: "Email Sent",
-          subline: "Verify yourself with the link in your inbox"
+      if(formData.password == formData.confirmPassword) {
+        this.setState({head: "Signing you up"})
+        var comp = this
+        var url = "https://auth.fortune22.hasura-app.io/v1/signup";
+        axios.post(url, {
+          "provider": "email",
+          "data": {
+            "email": formData.email,
+            "password": formData.password,
+          }
+        })
+        .then(function(response) {
+          console.log(response);
+          comp.setState({
+            head: "Email Sent",
+            subline: "Verify with the link in your inbox and Login"
+          });
+        })
+        .catch(function(error) {
+          console.log('Request Failed:' + error);
+          if(error.response) {
+            if(error.response.status==400){
+              if(error.response.data.code=="already-exists"){
+                comp.setState({
+                  head: "Seems familiar",
+                  subline: "You're an existing user. Login!",
+                });
+              }
+              else if(error.response.data.code=="invalid-email"){
+                comp.setState({
+                  head: "Invalid Email",
+                  subline: "That doesn't look like an email address",
+                });
+              }
+              else if(error.response.data.code=="invalid-password"){
+                comp.setState({
+                  head: "Invalid Password",
+                  subline: "Minimum password length is 8 characters",
+                });
+              }
+              else {
+                comp.setState({
+                  head: "Something's Wrong",
+                  subline: "Please try again",
+                });
+              }
+            }
+            else {
+              comp.setState({
+                head: "Something's Wrong",
+                subline: "Please try again",
+              });
+            }
+          }
+          else {
+            comp.setState({
+              head: "Aw, Snap!",
+              subline: "Please try again after a while",
+            });
+          }
         });
-      })
-      .catch(function(error) {
-        console.log('Request Failed:' + error);
-        comp.setState({
-          head: "Request Failed",
-          subline: 'An Error occured'
+      }
+      else{
+        this.setState({
+          head: "Passwords Mismatch",
+          subline: "Try retyping your passwords without typos",
         });
-      });
+      }
     }
   }
 

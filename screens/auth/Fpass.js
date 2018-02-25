@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, View, Text, Button} from 'react-native';
 import t from 'tcomb-form-native';
+import axios from 'axios';
 
 const Form = t.form.Form;
 
@@ -32,30 +33,37 @@ export default class Fpass extends React.Component {
       this.setState({head: "Sending Email"})
       var comp = this
       var url = "https://auth.fortune22.hasura-app.io/v1/providers/email/forgot-password";
-      var requestOptions = {
-          "method": "POST",
-          "headers": {
-              "Content-Type": "application/json"
-          }
-      };
-      var body = {
-          "email": formData.email,
-      };
-      requestOptions.body = JSON.stringify(body);
 
-      fetch(url, requestOptions)
+      axios.post(url, { "email": formData.email,})
       .then(function(response) {
-      	return response.json();
-      })
-      .then(function(result) {
-      	console.log(result);
+      	console.log(response);
         comp.setState({
           head: "Email Sent",
           subline: "Please check your inbox"
         });
       })
       .catch(function(error) {
-      	console.log('Request Failed:' + error);
+        console.log('Request Failed:' + error);
+        if(error.response) {
+          if(error.response.status==400){
+            comp.setState({
+              head: "Invalid Email",
+              subhead: "Please check if you have entered a registered email address",
+            });
+          }
+          else {
+            comp.setState({
+              head: "Something's Wrong",
+              subhead: "Please try again",
+            });
+          }
+        }
+        else {
+          comp.setState({
+            head: "Aw, Snap!",
+            subhead: "Please try again after a while",
+          });
+        }
       });
     }
   }

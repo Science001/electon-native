@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, View, Text, Button, AsyncStorage, KeyboardAvoidingView} from 'react-native';
 import t from 'tcomb-form-native';
+import axios from 'axios';
 
 const Form = t.form.Form;
 
@@ -27,8 +28,10 @@ export default class LoginEmail extends React.Component {
     super(props)
     this.state={
       head: "LOGIN",
+      subhead: "Hello! Login with your Email",
     }
   }
+
 
   handlePress = () => {
     const formData = this.formRef.getValue()
@@ -36,29 +39,16 @@ export default class LoginEmail extends React.Component {
       this.setState({head: "Logging you in"})
       var comp = this
       var url = "https://auth.fortune22.hasura-app.io/v1/login";
-      var requestOptions = {
-        "method": "POST",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      };
-      var body = {
+      axios.post(url, {
         "provider": "email",
         "data": {
           "email": formData.email,
           "password": formData.password,
         }
-      };
-      requestOptions.body = JSON.stringify(body);
-
-      fetch(url, requestOptions)
-      .then(function(response) {
-        return response.json();
       })
-      .then(function(result) {
-        console.log(result);
-        // To save the auth token received to offline storage
-        var authToken = result.auth_token
+      .then(function(response) {
+        console.log(response);
+        var authToken = response.data.auth_token
         AsyncStorage.setItem('HASURA_AUTH_TOKEN', authToken);
         comp.setState({
           head: "Logged in"
@@ -67,10 +57,26 @@ export default class LoginEmail extends React.Component {
       })
       .catch(function(error) {
         console.log('Request Failed:' + error);
-        comp.setState({
-          head: "Request Failed",
-          subline: 'An Error occured'
-        });
+        if(error.response) {
+          if(error.response.status==400){
+            comp.setState({
+              head: "Invalid Credentials",
+              subhead: "Your Email / Password is incorrect",
+            });
+          }
+          else {
+            comp.setState({
+              head: "Something's Wrong",
+              subhead: "Please try again",
+            });
+          }
+        }
+        else {
+          comp.setState({
+            head: "Aw, Snap!",
+            subhead: "Please try again after a while",
+          });
+        }
       });
     }
   }
@@ -80,7 +86,7 @@ export default class LoginEmail extends React.Component {
       <View style={styles.background}>
         <KeyboardAvoidingView behavior="padding" style={styles.container}>
           <Text style={styles.heading}>{this.state.head}</Text>
-          <Text style={{color: '#8074d7', marginBottom: 25}}>Hello! Login with your Email</Text>
+          <Text style={{color: '#8074d7', marginBottom: 25}}>{this.state.subhead}</Text>
           <View style={{width: 250}}>
             <Form
               ref={c => this.formRef=c}
